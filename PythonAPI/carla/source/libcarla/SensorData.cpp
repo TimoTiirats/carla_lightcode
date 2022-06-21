@@ -44,6 +44,14 @@ namespace data {
     return out;
   }
 
+  std::ostream &operator<<(std::ostream &out, const LightCodeImage &image) {
+    out << "LightCodeImage(frame=" << std::to_string(image.GetFrame())
+        << ", timestamp=" << std::to_string(image.GetTimestamp())
+        << ", size=" << std::to_string(image.GetWidth()) << 'x' << std::to_string(image.GetHeight())
+        << ')';
+    return out;
+  }
+
   std::ostream &operator<<(std::ostream &out, const OpticalFlowImage &image) {
     out << "OpticalFlowImage(frame=" << std::to_string(image.GetFrame())
         << ", timestamp=" << std::to_string(image.GetTimestamp())
@@ -417,6 +425,23 @@ void export_sensor_data() {
       return self.at(pos);
     })
     .def("__setitem__", +[](csd::OpticalFlowImage &self, size_t pos, csd::OpticalFlowPixel color) {
+      self.at(pos) = color;
+    })
+    .def(self_ns::str(self_ns::self))
+  ;
+
+  class_<csd::LightCodeImage, bases<cs::SensorData>, boost::noncopyable, boost::shared_ptr<csd::LightCodeImage>>("LightCodeImage", no_init)
+    .add_property("width", &csd::LightCodeImage::GetWidth)
+    .add_property("height", &csd::LightCodeImage::GetHeight)
+    .add_property("fov", &csd::LightCodeImage::GetFOVAngle)
+    .add_property("range", &csd::LightCodeImage::GetRange)
+    .add_property("raw_data", &GetRawDataAsBuffer<csd::LightCodeImage>)
+    .def("__len__", &csd::LightCodeImage::size)
+    .def("__iter__", iterator<csd::LightCodeImage>())
+    .def("__getitem__", +[](const csd::LightCodeImage &self, size_t pos) -> csd::LightCodePixel {
+      return self.at(pos);
+    })
+    .def("__setitem__", +[](csd::LightCodeImage &self, size_t pos, csd::LightCodePixel color) {
       self.at(pos) = color;
     })
     .def(self_ns::str(self_ns::self))

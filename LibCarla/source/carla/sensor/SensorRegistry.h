@@ -19,6 +19,7 @@
 #include "carla/sensor/s11n/EpisodeStateSerializer.h"
 #include "carla/sensor/s11n/GnssSerializer.h"
 #include "carla/sensor/s11n/ImageSerializer.h"
+#include "carla/sensor/s11n/LightCodeSerializer.h"
 #include "carla/sensor/s11n/OpticalFlowImageSerializer.h"
 #include "carla/sensor/s11n/IMUSerializer.h"
 #include "carla/sensor/s11n/LidarSerializer.h"
@@ -30,6 +31,7 @@
 // 2. Add a forward-declaration of the sensor here.
 class ACollisionSensor;
 class ADepthCamera;
+class ALightCodeCamera;
 class ADVSCamera;
 class AGnssSensor;
 class AInertialMeasurementUnit;
@@ -58,6 +60,7 @@ namespace sensor {
   using SensorRegistry = CompositeSerializer<
     std::pair<ACollisionSensor *, s11n::CollisionEventSerializer>,
     std::pair<ADepthCamera *, s11n::ImageSerializer>,
+    std::pair<ALightCodeCamera *, s11n::LightCodeSerializer>,
     std::pair<ADVSCamera *, s11n::DVSEventArraySerializer>,
     std::pair<AGnssSensor *, s11n::GnssSerializer>,
     std::pair<AInertialMeasurementUnit *, s11n::IMUSerializer>,
@@ -84,6 +87,7 @@ namespace sensor {
 // 4. Include the sensor here.
 #include "Carla/Sensor/CollisionSensor.h"
 #include "Carla/Sensor/DepthCamera.h"
+#include "Carla/Sensor/LightCodeCamera.h"
 #include "Carla/Sensor/DVSCamera.h"
 #include "Carla/Sensor/GnssSensor.h"
 #include "Carla/Sensor/InertialMeasurementUnit.h"

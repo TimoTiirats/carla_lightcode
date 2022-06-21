@@ -9,6 +9,7 @@
 #include "carla/Debug.h"
 #include "carla/sensor/data/Array.h"
 #include "carla/sensor/s11n/ImageSerializer.h"
+#include "carla/sensor/s11n/LightCodeSerializer.h"
 #include "carla/sensor/s11n/OpticalFlowImageSerializer.h"
 
 namespace carla {
@@ -56,6 +57,53 @@ namespace data {
     auto GetFOVAngle() const {
       return GetHeader().fov_angle;
     }
+  };
+
+  /// Templated for LightCode camera image.
+  template <typename PixelT>
+  class LightCodeImageTmpl : public Array<PixelT> {
+    using Super = Array<PixelT>;
+  protected:
+
+    using SerializerLightCode = s11n::LightCodeSerializer;
+    
+    friend SerializerLightCode;
+
+    explicit LightCodeImageTmpl(RawData &&data)
+      : Super(SerializerLightCode::header_offset, std::move(data)) {
+      DEBUG_ASSERT(GetWidth() * GetHeight() == Super::size());
+    }
+
+  private:
+
+    const auto &GetHeader() const {
+      return SerializerLightCode::DeserializeHeader(Super::GetRawData());
+    }
+
+  public:
+
+    using pixel_type = PixelT;
+
+    /// Get image width in pixels.
+    auto GetWidth() const {
+      return GetHeader().width;
+    }
+
+    /// Get image height in pixels.
+    auto GetHeight() const {
+      return GetHeader().height;
+    }
+
+    /// Get horizontal field of view of the image in degrees.
+    auto GetFOVAngle() const {
+      return GetHeader().fov_angle;
+    }
+
+    /// Get camera range in meters.
+    auto GetRange() const {
+      return GetHeader().range;
+    }
+
   };
 
 } // namespace data

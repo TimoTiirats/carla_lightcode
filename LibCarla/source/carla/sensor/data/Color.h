@@ -75,6 +75,29 @@ namespace data {
   };
 #pragma pack(pop)
 
+#pragma pack(push, 1)
+  /// LightCode camera pixel format. 1 channel float data.
+  struct LightCodePixel {
+    LightCodePixel() = default;
+    LightCodePixel(const LightCodePixel &) = default;
+
+    LightCodePixel(float x)
+      : x(x) {}
+
+    LightCodePixel &operator=(const LightCodePixel &) = default;
+
+    bool operator==(const LightCodePixel &rhs) const  {
+      return (x == rhs.x);
+    }
+
+    bool operator!=(const LightCodePixel &rhs) const  {
+      return !(*this == rhs);
+    }
+
+    float x = 0;
+  };
+#pragma pack(pop)
+
 } // namespace data
 } // namespace sensor
 } // namespace carla
