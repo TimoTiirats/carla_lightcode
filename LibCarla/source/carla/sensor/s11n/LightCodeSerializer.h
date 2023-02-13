@@ -85,9 +85,10 @@ namespace s11n {
 
     // Calculate point cloud based on distances, camera parameters and pixel positions. 
     // Coordinates follow left hand rule: X-forward, Y-right, z-up.
-    float angularResolution = fieldOfView / hResolution;
-    int hHalfPixelCount = hResolution / 2;
-    int vHalfPixelCount = vResolution / 2;
+    int cx = hResolution / 2;
+    int cy = vResolution / 2;
+    float fx = hResolution / static_cast<float>((2.0 * std::tan(fieldOfView * M_PI / 360)));
+    float fy = fx;
 
     int column = 0;
     int row = 0;
@@ -97,14 +98,9 @@ namespace s11n {
       float z_coordinate;
       column = i % hResolution;
 
-      // Finding y-coordinates
-      y_coordinate = x_coordinate / static_cast<float>(std::tan( ( 90 - std::abs( hHalfPixelCount - column - 0.5) * angularResolution )  * M_PI / 180));
-      y_coordinate = (column < hHalfPixelCount) ? -y_coordinate : y_coordinate;
+      z_coordinate = ((cy - row) / fy) * x_coordinate;
+      y_coordinate = -((cx - column) / fx) * x_coordinate;
 
-      // Finding z-coordinates
-      z_coordinate = x_coordinate / static_cast<float>(std::tan( ( 90 - std::abs( vHalfPixelCount - row - 0.5) * angularResolution ) * M_PI / 180));
-      z_coordinate = (row >= vHalfPixelCount) ? -z_coordinate : z_coordinate;
-      
       row = (column == (hResolution - 1)) ? row + 1 : row;
 
       coordinates[3 * i] = x_coordinate;

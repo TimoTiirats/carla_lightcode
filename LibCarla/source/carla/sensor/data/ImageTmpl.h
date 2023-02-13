@@ -30,7 +30,7 @@ namespace data {
 
     explicit ImageTmpl(RawData &&data)
       : Super(Serializer::header_offset, std::move(data)) {
-      DEBUG_ASSERT(GetWidth() * GetHeight() == Super::size());
+      DEBUG_ASSERT(GetWidth() * GetHeight() * 3 == Super::size()); // For each pixel we have [X, Y, Z] coordinates
     }
 
   private:

@@ -83,7 +83,7 @@ def parse_args():
 def main():
 
     args = parse_args()
-    carla_image_name = "carla:latest"
+    carla_image_name = "tiiratst/carla-lightcode"
     inbox_assets_path = '/home/carla/carla/Import'
     client = docker.from_env()
 

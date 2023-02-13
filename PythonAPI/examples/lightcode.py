@@ -116,6 +116,8 @@ def main():
                     # Array of xyz-coordinates, where each row represents one point in local space. Coordinates are left handed.
                     xyz_coordinates = np.ndarray(shape=((lightcode_image.width * lightcode_image.height), 3), dtype=np.float32, buffer=lightcode_image.raw_data)
                     
+                    print(xyz_coordinates)
+                    
                     # Possibility to save .pcd files
                     #point_cloud_to_save = pypcd.make_xyz_point_cloud(xyz_coordinates.copy()) 
                     #pypcd.save_point_cloud_bin(point_cloud_to_save, "../output/lightcode/{frame}_.pcd".format(frame=lightcode_image.frame))
